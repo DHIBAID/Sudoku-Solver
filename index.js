@@ -1,57 +1,55 @@
 const board = [
-    ['.', '.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.', '.'],
-]
+    [".", "9", ".", ".", "4", "2", "1", "3", "6"],
+    [".", ".", ".", "9", "6", ".", "4", "8", "5"],
+    [".", ".", ".", "5", "8", "1", ".", ".", "."],
+    [".", ".", "4", ".", ".", ".", ".", ".", "."],
+    ["5", "1", "7", "2", ".", ".", "9", ".", "."],
+    ["6", ".", "2", ".", ".", ".", "3", "7", "."],
+    ["1", ".", ".", "8", ".", "4", ".", "2", "."],
+    ["7", ".", "6", ".", ".", ".", "8", "1", "."],
+    ["3", ".", ".", ".", "9", ".", ".", ".", "."],
+];
+solve(board);
+let string = ""
 
-solve(board)
-printResult()
-
-function checkSpot(board, row, col, k) {
-  for (let i = 0; i < 9; i++) {
-    const m = 3 * Math.floor(row / 3) + Math.floor(i / 3)
-    const n = 3 * Math.floor(col / 3) + i % 3
-    if (board[row][i] == k || board[i][col] == k || board[m][n] == k) {
-      return false
-    }
+for(let a = 0; a < board.length; a++){
+  for (let b = 0; b < board[a].length; b++){
+    string += " " + board[a][b] + " "
   }
-  return true
+  string += "\n"
 }
 
-function printResult(){
-  let result = ""
-  for (let a = 0; a < 9; a++){
-    for (let b = 0; b < 9; b++){
-      result = result + " " + board[a][b] + " "
+console.log(string)
+
+function isValid(board, row, col, k) {
+    for (let i = 0; i < 9; i++) {
+        const m = 3 * Math.floor(row / 3) + Math.floor(i / 3);
+        const n = 3 * Math.floor(col / 3) + i % 3;
+        if (board[row][i] == k || board[i][col] == k || board[m][n] == k) {
+          return false;
+        }
     }
-    result = result + "\n"
-  }
-  console.log(result)
+    return true;
 }
+
 
 function solve(data) {
   for (let i = 0; i < 9; i++) {
     for (let j = 0; j < 9; j++) {
-      if (data[i][j] == '.') {
+      if (data[i][j] == ".") {
         for (let k = 1; k <= 9; k++) {
-          if (checkSpot(data, i, j, k)) {
-            data[i][j] = `${k}`
+          if (isValid(data, i, j, k)) {
+            data[i][j] = `${k}`;
           if (solve(data)) {
-           return true
+           return true;
           } else {
-           data[i][j] = '.'
+           data[i][j] = ".";
           }
          }
        }
-       return false
+       return false;
      }
    }
  }
- return true
+ return true;
 }
